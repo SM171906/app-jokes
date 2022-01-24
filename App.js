@@ -6,18 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
-
-
 const navigationRef = createNavigationContainerRef()
-
-function HomeScreen({ navigation }) {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Tab1" component={Tab1} />
-      <Tab.Screen name="Tab2" initialParams={{ itemId: 100 }} component={Tab2} />
-    </Tab.Navigator>
-  );
-}
 
 function Tab1 ({ route, navigation }) {
   const { itemId } = route.params;
@@ -77,7 +66,7 @@ function TabNavigator (){
   )
 }
 
-const getDataUsingGet = (navigation) => {
+const getAJoke = (navigation) => {
   //GET request
   fetch('https://v2.jokeapi.dev/joke/Any?safe-mode', {
     method: 'GET',
@@ -87,15 +76,13 @@ const getDataUsingGet = (navigation) => {
     //If response is in json then in success
     .then((responseJson) => {
       //Success
-      console.log(responseJson);
       setupVal = responseJson['setup']? responseJson['setup']:responseJson['joke']
-      deliveryVal = responseJson['delivery']? responseJson['delivery']:responseJson['joke']
-      console.log('SetupVal:: ' + setupVal);
+      deliveryVal = responseJson['delivery']? responseJson['delivery']:responseJson['joke']  
       navigation.navigate('Tab1', {
         itemId: setupVal,
         otherParam: deliveryVal,
       });
-      //console.log(responseJson);
+      
     })
     //If response is not in json then in error
     .catch((error) => {
@@ -114,7 +101,7 @@ export default function App() {
           return (
           <DrawerContentScrollView {...props}>
           <DrawerItemList {...props} />
-          <DrawerItem label="Show me a Joke" onPress={() => getDataUsingGet(props.navigation)} />
+          <DrawerItem label="Show me a Joke" onPress={() => getAJoke(props.navigation)} />
           </DrawerContentScrollView>
           )
         }}>
